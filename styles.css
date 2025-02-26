@@ -1,0 +1,282 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+header {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#logo {
+    height: 50px; /* Adjust the height as needed */
+    margin-right: 10px; /* Add some space between the logo and the title */
+}
+
+#sidePanel {
+    width: 200px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: auto; /* Adjust the height as needed */
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#howToUseButton {
+    background-color: white;
+    color: #4CAF50;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+#howToUseButton:hover {
+    background-color: #4CAF50;
+    color: white;
+    transform: scale(1.1);
+}
+
+#credits {
+    font-size: 14px;
+    color: white;
+    margin-top: auto;
+}
+
+#mainContent {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    margin-left: 0; /* Align the content directly under the logo sign */
+    margin-top: 20px; /* Add some space below the header */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+}
+
+h1 {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    margin: 0;
+    border-radius: 10px;
+}
+
+input[type="file"] {
+    margin: 20px 0;
+    padding: 10px;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#dropZone {
+    border: 2px dashed #4CAF50;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    background-color: #45a049;
+    transform: scale(1.1);
+}
+
+#timestamp {
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+h2 {
+    margin-top: 40px;
+}
+
+#playlist {
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px; /* Adjust the height as needed */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%; /* Make the playlist take the full width */
+    max-width: 600px; /* Set a maximum width for the playlist */
+}
+
+#playlist li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#playlist li:hover {
+    background-color: #f1f1f1;
+}
+
+#volumeControl {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#volumeSlider {
+    width: 150px;
+    height: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+#volumeSlider:hover {
+    opacity: 1;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#volumeSlider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#volumeLabel {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+#pitchControl {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#pitchSlider {
+    width: 150px;
+    height: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+#pitchSlider:hover {
+    opacity: 1;
+}
+
+#pitchSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#pitchSlider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#pitchLabel {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+#currentSong {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+footer {
+    background-color: #f0f0f0;
+    color: #333;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+#version {
+    font-size: 14px;
+    text-align: left;
+}
