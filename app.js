@@ -193,16 +193,17 @@ dropZone.addEventListener('drop', handleDrop);
 playPauseButton.addEventListener('click', togglePlayPause);
 loopButton.addEventListener('click', toggleLoop);
 volumeSlider.addEventListener('input', updateVolume);
+volumeSlider.addEventListener('touchmove', updateVolume); // Add touch event listener for mobile devices
 pitchSlider.addEventListener('input', updatePitch);
 
 // Scroll event listener to handle footer fade in/out
 window.addEventListener('scroll', () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    if (scrollTop > 0 && isFooterVisible) {
+    if (scrollTop > lastScrollTop && isFooterVisible) {
         // Scrolling down
         footer.style.opacity = '0';
         isFooterVisible = false;
-    } else if (scrollTop === 0 && !isFooterVisible) {
+    } else if (scrollTop < lastScrollTop && !isFooterVisible) {
         // Scrolling up
         footer.style.opacity = '1';
         isFooterVisible = true;
