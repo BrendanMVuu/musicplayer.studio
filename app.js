@@ -198,11 +198,11 @@ pitchSlider.addEventListener('input', updatePitch);
 // Scroll event listener to handle footer fade in/out
 window.addEventListener('scroll', () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    if (scrollTop > lastScrollTop && isFooterVisible) {
+    if (scrollTop > 0 && isFooterVisible) {
         // Scrolling down
         footer.style.opacity = '0';
         isFooterVisible = false;
-    } else if (scrollTop < lastScrollTop && !isFooterVisible) {
+    } else if (scrollTop === 0 && !isFooterVisible) {
         // Scrolling up
         footer.style.opacity = '1';
         isFooterVisible = true;
