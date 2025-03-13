@@ -30,6 +30,7 @@ let isFooterVisible = true;
 function startPlayback() {
     if (sourceNode) {
         sourceNode.disconnect();
+        sourceNode.stop();
     }
     sourceNode = audioContext.createBufferSource();
     sourceNode.buffer = audioBuffer;
@@ -100,6 +101,7 @@ function handleSongEnd() {
         startPlayback();
     } else {
         playPauseButton.textContent = 'Play';
+        isPlaying = false;
     }
 }
 

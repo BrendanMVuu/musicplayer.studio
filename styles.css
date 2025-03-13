@@ -258,7 +258,7 @@ h2 {
 }
 
 footer {
-    background-color: #f0f0f0;
+    background-color: transparent; /* Make the footer background transparent */
     color: #333;
     text-align: center;
     padding: 10px 0;
@@ -268,14 +268,15 @@ footer {
     left: 0;
     z-index: 1000; /* Ensure the footer is above other elements */
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Center the text */
     padding: 10px 20px;
     transition: opacity 0.5s; /* Add transition for smooth fading */
 }
 
 #version {
     font-size: 14px;
-    text-align: left;
+    text-align: center;
+    color: #4CAF50; /* Change the text color to ensure visibility */
 }
 
 /* Media Queries for Responsive Design */
