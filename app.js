@@ -193,7 +193,6 @@ dropZone.addEventListener('drop', handleDrop);
 playPauseButton.addEventListener('click', togglePlayPause);
 loopButton.addEventListener('click', toggleLoop);
 volumeSlider.addEventListener('input', updateVolume);
-volumeSlider.addEventListener('touchstart', updateVolume); // Add touch event listener for mobile devices
 volumeSlider.addEventListener('touchmove', updateVolume); // Add touch event listener for mobile devices
 pitchSlider.addEventListener('input', updatePitch);
 
