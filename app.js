@@ -174,7 +174,7 @@ function updateVolume() {
 }
 
 function updatePitch() {
-    const pitchValue = parseFloat(pitchSlider.value).toFixed(2);
+    const pitchValue = parseFloat(pitchSlider.value).toFixed(1); // Display with one decimal place
     pitchLabel.textContent = pitchValue;
     if (sourceNode) {
         sourceNode.playbackRate.value = pitchValue;
