@@ -10,6 +10,8 @@ const pitchSlider = document.getElementById('pitchSlider');
 const pitchLabel = document.getElementById('pitchLabel');
 const currentSong = document.getElementById('currentSong'); // New element for current song name
 const footer = document.querySelector('footer'); // Select the footer element
+const timeGraph = document.getElementById('timeGraph'); // Canvas for time graph
+const ctx = timeGraph.getContext('2d'); // Canvas context
 
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let sourceNode;
@@ -22,12 +24,15 @@ let startTime = 0;
 let pausedAt = 0;
 let currentFileIndex = 0;
 let playlistFiles = [];
+let analyserNode;
+let bufferLength;
+let dataArray;
 
 // Variables to track scroll direction
 let lastScrollTop = 0;
 let isFooterVisible = true;
 
-function startPlayback() {
+function startPlayback(seekTime = 0) {
     if (sourceNode) {
         sourceNode.disconnect();
         sourceNode.stop();
@@ -36,9 +41,15 @@ function startPlayback() {
     sourceNode.buffer = audioBuffer;
 
     pitchShiftNode = audioContext.createGain();
+    analyserNode = audioContext.createAnalyser();
+    analyserNode.fftSize = 2048;
+    bufferLength = analyserNode.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
+
     sourceNode.connect(pitchShiftNode);
     pitchShiftNode.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    gainNode.connect(analyserNode);
+    analyserNode.connect(audioContext.destination);
 
     sourceNode.onended = handleSongEnd;
 
@@ -46,8 +57,8 @@ function startPlayback() {
     const pitchValue = parseFloat(pitchSlider.value);
     sourceNode.playbackRate.setValueAtTime(pitchValue, audioContext.currentTime);
 
-    startTime = audioContext.currentTime - pausedAt;
-    sourceNode.start(0, pausedAt);
+    startTime = audioContext.currentTime - seekTime;
+    sourceNode.start(0, seekTime);
     pausedAt = 0;
 
     // Smooth fade in
@@ -59,7 +70,7 @@ function startPlayback() {
     playPauseButton.textContent = 'Pause';
     isPlaying = true;
 
-    // Start updating the timestamp
+    // Start updating the timestamp and time graph
     requestAnimationFrame(updateTimestamp);
 }
 
@@ -84,7 +95,7 @@ function togglePlayPause() {
         }, fadeOutDuration * 1000);
     } else {
         if (audioBuffer) {
-            startPlayback();
+            startPlayback(pausedAt);
         } else {
             playFile(currentFileIndex);
         }
@@ -173,9 +184,41 @@ function updatePitch() {
 function updateTimestamp() {
     if (isPlaying) {
         const elapsedTime = audioContext.currentTime - startTime;
+        const duration = audioBuffer.duration;
+        const progress = elapsedTime / duration;
+
+        // Update the timestamp
         const minutes = Math.floor(elapsedTime / 60);
         const seconds = Math.floor(elapsedTime % 60);
         timestamp.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        // Clear the canvas
+        ctx.clearRect(0, 0, timeGraph.width, timeGraph.height);
+
+        // Draw the progress bar
+        ctx.fillStyle = '#4CAF50';
+        ctx.fillRect(0, 0, progress * timeGraph.width, timeGraph.height);
+
+        // Draw the waveform
+        analyserNode.getByteTimeDomainData(dataArray);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#000000';
+        ctx.beginPath();
+        const sliceWidth = timeGraph.width * 1.0 / bufferLength;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+            const v = dataArray[i] / 128.0;
+            const y = v * timeGraph.height / 2;
+            if (i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+            x += sliceWidth;
+        }
+        ctx.lineTo(timeGraph.width, timeGraph.height / 2);
+        ctx.stroke();
+
         requestAnimationFrame(updateTimestamp);
     }
 }
@@ -184,6 +227,8 @@ function resetTimestamp() {
     startTime = 0;
     pausedAt = 0;
     timestamp.textContent = '0:00';
+    // Clear the canvas
+    ctx.clearRect(0, 0, timeGraph.width, timeGraph.height);
 }
 
 // Event listeners
@@ -210,4 +255,16 @@ window.addEventListener('scroll', () => {
         isFooterVisible = true;
     }
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+});
+
+// Click event listener for the time graph to seek to that part of the music
+timeGraph.addEventListener('click', (event) => {
+    if (audioBuffer) {
+        const rect = timeGraph.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const duration = audioBuffer.duration;
+        const seekTime = (x / timeGraph.width) * duration;
+
+        startPlayback(seekTime);
+    }
 });
