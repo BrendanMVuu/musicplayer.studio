@@ -147,6 +147,8 @@ function loadFile(file) {
             playPauseButton.disabled = false;
             addToPlaylist(file.name, buffer);
             resetTimestamp(); // Reset the timestamp when a new file is loaded
+        }, function(e) {
+            console.error("Error decoding audio data", e);
         });
     };
     reader.readAsArrayBuffer(file);
