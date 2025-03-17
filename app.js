@@ -166,8 +166,14 @@ function updateVolume() {
 }
 
 function updatePitch() {
-    const pitchValue = parseFloat(pitchSlider.value).toFixed(1); // Display with one decimal place
-    pitchLabel.textContent = pitchValue;
+    let pitchValue = parseFloat(pitchSlider.value);
+    if (pitchValue === 1.0) {
+        pitchLabel.textContent = `1x`; // Display as '1x'
+    } else if (pitchValue === 1.05) {
+        pitchLabel.textContent = `1.05x`; // Display as '1.05x'
+    } else {
+        pitchLabel.textContent = `${pitchValue.toFixed(2)}x`; // Display with two decimal places
+    }
     if (sourceNode) {
         sourceNode.playbackRate.value = pitchValue;
     }
