@@ -31,6 +31,7 @@ function startPlayback(seekTime = 0) {
     if (sourceNode) {
         sourceNode.disconnect();
         sourceNode.stop();
+        sourceNode = null; // Properly dispose of the old sourceNode
     }
     sourceNode = audioContext.createBufferSource();
     sourceNode.buffer = audioBuffer;
@@ -52,7 +53,7 @@ function startPlayback(seekTime = 0) {
     pausedAt = 0;
 
     // Smooth fade in
-    const fadeInDuration = 0.3; // duration in seconds
+    const fadeInDuration = 0.2; // duration in seconds
     const currentTime = audioContext.currentTime;
     gainNode.gain.setValueAtTime(0, currentTime);
     gainNode.gain.linearRampToValueAtTime(volumeSlider.value, currentTime + fadeInDuration);
@@ -70,7 +71,7 @@ function togglePlayPause() {
     }
     if (isPlaying) {
         // Smooth fade out
-        const fadeOutDuration = 0.3; // duration in seconds
+        const fadeOutDuration = 0.2; // duration in seconds
         const currentTime = audioContext.currentTime;
         gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime);
         gainNode.gain.linearRampToValueAtTime(0, currentTime + fadeOutDuration);
@@ -138,7 +139,12 @@ function loadFile(file) {
             addToPlaylist(file.name, buffer);
         }, function(e) {
             console.error("Error decoding audio data", e);
+            alert("Error decoding audio data. Please try a different file.");
         });
+    };
+    reader.onerror = function(e) {
+        console.error("Error reading file", e);
+        alert("Error reading file. Please try again.");
     };
     reader.readAsArrayBuffer(file);
 }
@@ -163,6 +169,11 @@ function updateVolume() {
     gainNode.gain.value = volumeSlider.value;
     volumeLabel.textContent = `${Math.round(volumeSlider.value * 100)}%`;
 }
+
+// Add touch event listeners for mobile devices
+volumeSlider.addEventListener('input', updateVolume);
+volumeSlider.addEventListener('touchstart', updateVolume);
+volumeSlider.addEventListener('touchmove', updateVolume);
 
 function updatePitch() {
     let pitchValue = parseFloat(pitchSlider.value);
@@ -199,18 +210,16 @@ dropZone.addEventListener('drop', handleDrop);
 playPauseButton.addEventListener('click', togglePlayPause);
 loopButton.addEventListener('click', toggleLoop);
 volumeSlider.addEventListener('input', updateVolume);
-volumeSlider.addEventListener('touchstart', updateVolume); // Add touch event listener for mobile devices
-volumeSlider.addEventListener('touchmove', updateVolume); // Add touch event listener for mobile devices
 pitchSlider.addEventListener('input', updatePitch);
 
 // Scroll event listener to handle footer fade in/out
 window.addEventListener('scroll', () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    if (scrollTop > 0 && isFooterVisible) {
+    if (scrollTop > lastScrollTop && isFooterVisible) {
         // Scrolling down
         footer.style.opacity = '0';
         isFooterVisible = false;
-    } else if (scrollTop === 0 && !isFooterVisible) {
+    } else if (scrollTop < lastScrollTop && !isFooterVisible) {
         // Scrolling up
         footer.style.opacity = '1';
         isFooterVisible = true;
