@@ -170,11 +170,6 @@ function updateVolume() {
     volumeLabel.textContent = `${Math.round(volumeSlider.value * 100)}%`;
 }
 
-// Add touch event listeners for mobile devices
-volumeSlider.addEventListener('input', updateVolume);
-volumeSlider.addEventListener('touchstart', updateVolume);
-volumeSlider.addEventListener('touchmove', updateVolume);
-
 function updatePitch() {
     let pitchValue = parseFloat(pitchSlider.value);
     pitchLabel.textContent = `${pitchValue.toFixed(2)}x`; // Display with two decimal places
@@ -209,6 +204,7 @@ dropZone.addEventListener('dragover', handleDragOver);
 dropZone.addEventListener('drop', handleDrop);
 playPauseButton.addEventListener('click', togglePlayPause);
 loopButton.addEventListener('click', toggleLoop);
+volumeSlider.addEventListener('input', updateVolume);
 pitchSlider.addEventListener('input', updatePitch);
 
 // Scroll event listener to handle footer fade in/out
