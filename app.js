@@ -209,7 +209,6 @@ dropZone.addEventListener('dragover', handleDragOver);
 dropZone.addEventListener('drop', handleDrop);
 playPauseButton.addEventListener('click', togglePlayPause);
 loopButton.addEventListener('click', toggleLoop);
-volumeSlider.addEventListener('input', updateVolume);
 pitchSlider.addEventListener('input', updatePitch);
 
 // Scroll event listener to handle footer fade in/out
