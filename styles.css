@@ -126,9 +126,12 @@ h2 {
     align-items: center;
 }
 
+#volumeSlider, #pitchSlider {
+    width: 300px; /* Adjust the width as needed */
+    height: 10px; /* Adjust the height as needed */
+}
+
 #volumeSlider {
-    width: 150px;
-    height: 5px;
     -webkit-appearance: none;
     appearance: none;
     background: #ddd;
@@ -175,8 +178,6 @@ h2 {
 }
 
 #pitchSlider {
-    width: 150px;
-    height: 5px;
     -webkit-appearance: none;
     appearance: none;
     background: #ddd;
